@@ -6,14 +6,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.Vector;
+
+// Random r = new Random(r.nextInt(100));
+
+// spinner >> onItemSelectedListenner()
+// onItemclickListenner();
 
 
 public class MainActivity extends AppCompatActivity {
 
 
     Modele modele = new Modele();
+
+    TextView prompt_question,prompt_reponse;
+
+    ListView ListeInvention;
 
 
     @Override
@@ -22,17 +37,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         GestionBD instance = GestionBD.getInstance(getApplicationContext());
+        Ecouteur ec = new Ecouteur();
+        ListeInvention = findViewById(R.id.ListeInvention);
+        prompt_question = findViewById(R.id.prompt_question);
+        prompt_reponse = findViewById(R.id.prompt_reponse);
 
+
+        prompt_question.setText("Quelle invention est crédité à mary Anderson?");
 
         instance.ouvrirConnexion();
-        Vector<String> st = new Vector<String>(instance.retournerInvention());
-        System.out.println(st);
 
+        Vector<String> st = new Vector<String>(instance.retournerInvention());
+        ArrayAdapter<String> array = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,st);
+        ListeInvention.setAdapter(array);
+
+        ListeInvention.setOnItemClickListener(ec);
+
+
+        // Test de méthode ici
+        /*System.out.println(st);
         String testnom = "Grace Hopper";
         String testinvetion = "Compilateur";
         instance.retournerMatch(testinvetion,testnom);
-
-        System.out.println(instance.retournerMatch(testinvetion,testnom));
+        System.out.println(instance.retournerMatch(testinvetion,testnom));*/
 
         instance.fermerConnexion();
 
@@ -63,6 +90,33 @@ public class MainActivity extends AppCompatActivity {
     }*/
     }
 
+    private class Ecouteur implements  AdapterView.OnItemClickListener, com.eric.appsql.Ecouteur {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            /*String reponse = st.get();
+
+            String reponseDonnee = view
+
+            if(instance.retournerMatch("Mary Anderson",reponseDonnee)){
+
+            }
+            else{
+
+            }
+        }*/
+
+
+    }
+
+       /* @Override
+        protected void onStop() {
+            super.onStop();
+            instance.fermerConnexion();
+        }*/
+
+
+}
 }
 
 
